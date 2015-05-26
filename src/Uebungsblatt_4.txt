@@ -1,0 +1,57 @@
+Einwohner.java ---------------------------------------------
+public class Einwohner{
+	private int einkommen;
+	
+	public int zuVersteuerndesEinkommen()
+	{return einkommen;}
+	
+	public int steuer()
+	{
+		int steuer=zuVersteuerndesEinkommen()/10;
+		if (steuer==0)
+			steuer=1;
+		return steuer;
+	}
+	
+	void setEinkommen(int einkommen)
+	{this.einkommen=einkommen;}
+}
+
+Adel.java --------------------------------------------------
+
+public class Adel extends Einwohner
+{
+	public int steuer()
+	{
+		int steuer=super.steuer();
+		if(steuer<20)
+			return 20;
+		return steuer;
+	}
+}
+
+Koenig.java ------------------------------------------------
+
+public class Adel extends Einwohner
+{
+	public int steuer()
+	{
+		int steuer=super.steuer();
+		if(steuer<20)
+			return 20;
+		return steuer;
+	}
+}
+
+Bauer.java -------------------------------------------------
+
+public class Bauer extends Einwohner{}
+
+Leibeigener.java -------------------------------------------
+
+public class Leibeigener extends Bauer{
+	public int zuVersteuerndesEinkommen()
+	{
+		return super.zuVersteuerndesEinkommen()-12;
+	}
+}
