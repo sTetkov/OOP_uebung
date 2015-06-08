@@ -1,1 +1,2 @@
-public class Bauer extends Einwohner{}
+public class Bauer extends Einwohner {
+}

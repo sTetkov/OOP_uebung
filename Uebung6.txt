@@ -1,0 +1,73 @@
+Sascha Tetkov - Übungsblatt 6			Mo 14-16
+
+Aufgabe 1)
+
+a)
+add(1.0, 2.0); // Aufruf 1 --> Fehler, da 2.0 nicht automatisch zu float Castet
+	 
+add(2.0, 1.0F); // Aufruf 2  --> Methode 2, da diese besser passt
+
+add(1, 2); // Aufruf 3  --> Methode 1, da diese besser passt
+
+add(2, 1L); // Aufruf 4   --> Methode 2, da diese besser passt
+
+print(c, c); // Aufruf 5 --> Methode 3, da diese besser passt
+
+print(a, c); // Aufruf 6 --> Methode 4, da diese besser passt
+
+print(c, b); // Aufruf 7 --> Methode 4, da diese besser passt
+
+print(b, a); // Aufruf 8 --> Fehler, findet kein matching
+
+
+
+Aufgabe 2)
+a)
+Interface:
+
+public interface IDynIntArray {
+	public void add(int e);
+	public void setElementAt(int i, int e);
+	public int getElementAt(int i);
+	public int getElementCount();
+	public void print();
+}
+
+
+Abstract Class:
+
+public abstract class AbstractDynIntArray {
+	public void add(int e) {}
+	public void setElementAt(int i, int e) {}
+	public int getElementAt(int i) { return 0; }
+	public int getElementCount() { return 0; }
+	public void print() {}
+}
+
+b)
+Klasse von Interface:
+
+public class DynIntArrayFromIFace implements IDynIntArray {
+
+	public void add(int e) {}
+
+	public void setElementAt(int i, int e) {}
+
+	public int getElementAt(int i) {return 0;}
+
+	public int getElementCount() {return 0;}
+
+	public void print() {}
+
+}
+
+In diesem Fall müssen alle in der Interface deklarierte Methoden in der Klasse Implementiert werden um die Klasse instanzieren zu können.
+
+Klasse von Abstract Class:
+
+
+public class DynIntArrayFromAbstrClass extends AbstractDynIntArray {
+
+}
+
+In diesem Fall, da die Methoden schon in der Abstract Class implementiert wurden, reicht es das DynIntArrayFromAbstrClass von AbstractDynIntArray abgeleitet wird um sie Instanzierbar zu machen. Falls eine Methode in AbstractDynIntArray als Asbtract deklariert gewesen währe, hätte diese in allen direkt abgeleiteten Klassen implementiert werden müssen um diese instanzierbar zu machen.  

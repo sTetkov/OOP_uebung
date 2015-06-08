@@ -1,3 +1,5 @@
-public class Koenig extends Einwohner{
-	public int steuer(){return 0;}
+public class Koenig extends Einwohner {
+	public int steuer() {
+		return 0;
+	}
 }

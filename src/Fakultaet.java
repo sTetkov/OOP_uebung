@@ -7,7 +7,7 @@ public class Fakultaet {
 	 */
 	public static void main(String[] args) {
 		int n = new Random().nextInt(10);
-		System.out.println("Random number :"+n + "!=" + fakultaet(n));
+		System.out.println("Random number :" + n + "!=" + fakultaet(n));
 		System.out.println();
 		printTable(10);
 	}
@@ -20,7 +20,7 @@ public class Fakultaet {
 	private static int fakultaet(int n) {
 		if (n < 3)
 			return n;
-		else if(n==0)
+		else if (n == 0)
 			return 1;
 		else
 			return n * fakultaet(n - 1);
