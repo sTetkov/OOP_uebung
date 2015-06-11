@@ -5,21 +5,45 @@ Aufgabe 1)
 a)
 add(1.0, 2.0); // Aufruf 1 --> Fehler, da 2.0 nicht automatisch zu float Castet
 	 
-add(2.0, 1.0F); // Aufruf 2  --> Methode 2, da diese besser passt
+add(2.0, 1.0F); // Aufruf 2  --> Methode 2, da diese passt weil wir ein double und einen float als Argumente durchgeben.
 
-add(1, 2); // Aufruf 3  --> Methode 1, da diese besser passt
+add(1, 2); // Aufruf 3  --> Methode 1, da diese passt weil man einen int automatisch zu long casten kann
 
-add(2, 1L); // Aufruf 4   --> Methode 2, da diese besser passt
+add(2, 1L); // Aufruf 4   --> Methode 2, da diese besser passtman einen Long zu float Casten kann, was nicht für int automatisch ist.
 
-print(c, c); // Aufruf 5 --> Methode 3, da diese besser passt
+print(c, c); // Aufruf 5 --> Methode 3, da c von B kommt und deshalb so ein gutes matching profil hat.
 
-print(a, c); // Aufruf 6 --> Methode 4, da diese besser passt
+print(a, c); // Aufruf 6 --> Methode 4, da c von B und deshalb auch von A kommt und so als diese Klasse gesehen werden kann, a aber nicht als B gesehen werden kann.
 
-print(c, b); // Aufruf 7 --> Methode 4, da diese besser passt
+print(c, b); // Aufruf 7 --> Methode 4, c kann als A gesehen werden, und b matcht
 
 print(b, a); // Aufruf 8 --> Fehler, findet kein matching
 
+b)
 
+System.out.println(p1.x);            // Aufruf 1
+p1 ist ein Zeiger of Print1, auch wenn die Instanz auf die dieser Zeigt effektiv eine Instanz von Print2 ist. Es werden also die felder von print1 Aufgerufen, was p1.x==1 heißt.
+
+System.out.println(((Print2)p1).x);  // Aufruf 2
+Das casting heißt das wir die Felder von Print2 benutzen, also ((Print2)p1).x==3.
+
+p1.print(c);                         // Aufruf 3
+da der Zeiger p1 auf ein Objekt Print2 zeigt, aber als Print1 deklariert ist, Castet es c als instanz von B und ruft so Print2.print(B b) auf
+
+((Print2)p1).print(c);               // Aufruf 4
+p1 wird explicit als Instanz der Klasse Print2 gecastet, und so benutzt die Methode Print2.print(C c) da hier die Signature passt.
+
+((Print1)p2).print(b);               // Aufruf 5
+p2 ist eine Instanz von Print2, das hißt das die Methoden von Print1 überschrieben wurden, welches uns dazu bringt das die Overloaded Methode Print2.print(B b) aufgerufen wird.
+
+((Print1)p2).print(c);               // Aufruf 6
+Da wir p2 als Objekt Print1 sehen, werden die Signatures von Print1 benutzt, die Methoden aber von Print2 da p2 eine Instanz von dieser ist. Also rufen wir Print2.print(B b) auf.
+
+p2.print(c);                         // Aufruf 7
+Es wird ganz klar die Methode Print2.print(C c) benutzt, da diese eine passende Signatur hat.
+
+((Print2)p1).print(a);               // Aufruf 8
+p1 ist eine Instanz von Print1, kann also nicht als Print2 gecastet werden und bringt deshalb einen Runtime Fehler.
 
 Aufgabe 2)
 a)
