@@ -1,0 +1,247 @@
+Sascha Tetkov - Uebungsblatt 5                MO 14-16
+
+Aufgabe 1)
+
+=========================DIAarray.java=================================
+public class DIAarray extends DynIntArray {
+
+	private int[] array;
+	private int internalSize;
+	private static final int maxIncrement=1024;
+
+	public void add(int e) {
+		if (internalSize==0)
+			array=new int[1];
+		if(internalSize==array.length)
+			extendArray();
+		array[internalSize]=e;
+		internalSize++;
+	}
+
+	private void extendArray() {
+		int increment=internalSize;
+		if (increment>maxIncrement)
+			increment=maxIncrement;
+		int[] newArray=new int[internalSize+increment];
+		for(int i=0;i<internalSize;i++)
+			newArray[i]=array[i];
+		array=newArray;
+	}
+
+	public void setElementAt(int i, int e) {
+		if(i>=internalSize)
+			return;
+		array[i]=e;
+	}
+
+	public int getElementAt(int i) {
+		if(i>=internalSize)
+			return 0;
+		return array[i];
+	}
+
+	public int getElementCount() {
+		return internalSize;
+	}
+
+	public void print() {
+		System.out.print("[");
+		for (int i=0;i<internalSize;i++)
+		{
+			System.out.print(array[i]);
+			if(i<internalSize-1)
+				System.out.print(", ");
+		}
+		System.out.println("]");
+	}
+}
+=========================DIAlist.java==================================
+public class DIAlist extends DynIntArray {
+
+	private IntListNode head;
+	private IntListNode tail;
+
+	public void add(int e) {
+		if(head==null)
+		{
+			head=new IntListNode(e);
+			tail=head;
+		}
+		else
+		{
+			tail.setNext(new IntListNode(e));
+			tail=tail.getNext();
+		}
+	}
+
+	public void setElementAt(int i, int e) {
+		IntListNode current=head;
+		for(int cnt=0;cnt<i;cnt++)
+		{
+			if(current==null)
+				return;
+			current=current.getNext();
+		}
+		current.setValue(e);
+	}
+
+	public int getElementAt(int i) {
+		IntListNode current=head;
+		for(int cnt=0;cnt<i;cnt++)
+		{
+			if(current==null)
+				return 0;
+			current=current.getNext();
+		}
+		return current.getValue();
+	}
+
+	public int getElementCount() {
+		int cnt=0;
+		IntListNode current=head;
+		while(current!=null)
+		{
+			current=current.getNext();
+			cnt++;
+		}
+		return cnt;
+	}
+
+	public void print() {
+		System.out.print("[");
+		IntListNode current=head;
+		while(current!=null)
+		{
+			System.out.print(current.getValue());
+			current=current.getNext();
+			if(current!=null)
+				System.out.print(", ");
+		}
+		System.out.println("]");
+	}
+}
+
+=======================================================================
+
+Aufgabe 2
+
+=========================Artikel.java==================================
+
+public class Artikel {
+	private int aktAnzahl;
+	private int minAnzahl;
+	private String name;
+	private float nettoPreis;
+	private float mwSt;
+
+	public Artikel(String name, int minAnzahl, int aktAnzahl, float nettoPreis, float mwSt)
+	{
+		this.name=name;
+		this.minAnzahl=minAnzahl;
+		this.aktAnzahl=aktAnzahl;
+		this.nettoPreis=nettoPreis;
+		this.mwSt=mwSt;
+	}
+
+	protected String getPrintString()
+	{
+		return "Artikel "+name+"\t\t"+aktAnzahl+"/"+minAnzahl
+				+"\tPreis: "+nettoPreis+" Euro\t MwSt: "+mwSt
+				+"% Preis Inkl. MwSt: "+nettoPreis*(1+mwSt/100);
+	}
+
+	public void print()
+	{
+		System.out.println(getPrintString());
+	}
+
+	public void printBestellung()
+	{
+		int vorrat=aktAnzahl-minAnzahl;
+		if(vorrat>=0)
+			System.out.println("Artikel "+name+":\t\t Vorrat reicht");
+		else
+		{
+			vorrat=-vorrat;
+			System.out.println("Artikel "+name+":\t\t es müssen mindestens "+vorrat
+					+" Exemplare bestellt werden für Netto Kosten (ohne MwSt) von "+(nettoPreis*vorrat)
+					+" Euro und einen Gesamtpreis (inkl. MwSt) von "+(nettoPreis*vorrat*(1+mwSt/100))+" Euro");
+		}
+	}
+	public static void printArtikel(Artikel arts[]) {
+		System.out.println("Artikelliste:");
+		for (int i = 0; i < arts.length; i++) {
+		arts[i].print(); System.out.println();
+		}
+		System.out.println("\nBestellung:");
+		for (int i = 0; i < arts.length; i++) {
+		arts[i].printBestellung(); System.out.println();
+		}
+		}
+
+	public static void main(String[] args)
+	{
+		Artikel[] arts=new Artikel[6];
+		arts[0]=new Buch("Java für Anfänger",10,4,(float) 19.90,234);
+		arts[1]=new Audio("Acht Fälle für Lord Peter",4,8,(float)23,8);
+		arts[2]=new Audio("Berthold Beitz: Die Biographie",16,8,(float)16,6);
+		arts[3]=new Kamera("Nikon Coolpix P900",8,5,(float)520.30,true);
+		arts[4]=new Kamera("Kodak EasyShare C195",10,20,(float)52.20,false);
+		arts[5]=new Buch("Der große Gatsby",10,10,(float)4.2,220);
+		printArtikel(arts);
+	}
+}
+
+=========================Buch.java=====================================
+
+public class Buch extends Artikel {
+
+	private int seiten;
+	public Buch(String name, int minAnzahl, int aktAnzahl, float nettoPreis,
+			int seiten){
+		super(name, minAnzahl, aktAnzahl, nettoPreis, (float) 7.0);
+		this.seiten=seiten;
+	}
+
+	protected String getPrintString()
+	{
+		return super.getPrintString()+" - ist ein buch mit "+seiten+" seiten";
+	}
+
+}
+
+=========================Audio.java====================================
+
+public class Audio extends Artikel {
+	private int elemente;
+	public Audio(String name, int minAnzahl, int aktAnzahl, float nettoPreis,
+			int elemente){
+		super(name, minAnzahl, aktAnzahl, nettoPreis, (float) 19.0);
+		this.elemente=elemente;
+	}
+
+	protected String getPrintString()
+	{
+		return super.getPrintString()+" - ist Audio und besteht aus "+elemente+" Elementen";
+	}
+}
+
+=========================Kamera.java===================================
+
+
+public class Kamera extends Artikel {
+	private boolean objektiv;
+	public Kamera(String name, int minAnzahl, int aktAnzahl, float nettoPreis,
+			boolean objektiv){
+		super(name, minAnzahl, aktAnzahl, nettoPreis, (float) 19.0);
+		this.objektiv=objektiv;
+	}
+
+	protected String getPrintString()
+	{
+		String res= super.getPrintString()+" - ist eine Kamera und hat";
+		if(objektiv)
+			return res+" ein Objektiv";
+		return res+" kein Objektiv";
+	}
+}

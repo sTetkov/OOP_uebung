@@ -1,0 +1,212 @@
+Sascha Tetkov - Uebungsblatt 7			MO 14-16
+Aufgabe 1)
+
+
+public interface IntMenge {
+    public void add(int i);
+    public void remove(int i);
+    public boolean contains(int i);
+    public boolean isEmpty();
+    public int getSize();
+    public int getSum();
+    public int[] getElements();
+    public void print();
+}
+
+=======================================================================
+import java.util.Iterator;
+import java.util.Vector;
+
+
+public abstract class AbstractIntMenge implements IntMenge {
+    
+    protected Vector<Integer> menge;
+    
+    public boolean isEmpty() {
+	return menge.isEmpty();
+    }
+
+    public int getSum() {
+	int sum=0;
+	Iterator<Integer> itr=menge.iterator();
+	while(itr.hasNext())
+	    sum+=itr.next().intValue();
+	return sum;
+    }
+
+    public void print() {
+	System.out.print("{");
+	Iterator<Integer> itr=menge.iterator();
+	if(itr.hasNext())
+	System.out.print(" "+itr.next()+" ");    
+	while(itr.hasNext())
+	    System.out.print(", "+itr.next()+" ");
+	System.out.print("}");    
+	
+    }
+
+}
+=======================================================================
+
+import java.util.Iterator;
+import java.util.Vector;
+
+
+public class IntMengeImpl extends AbstractIntMenge {
+
+    public IntMengeImpl()
+    {
+	menge = new Vector<Integer>();
+    }
+    public void add(int i) {
+	Integer elem=new Integer(i);
+	if(!menge.contains(elem))
+	    menge.addElement(elem);
+    }
+
+    public void remove(int i) {
+	Integer elem=new Integer(i);
+	if(menge.contains(elem))
+	    menge.removeElement(elem);
+    }
+
+    public boolean contains(int i) {
+	Integer elem=new Integer(i);
+	return menge.contains(elem);
+    }
+
+    public int getSize() {
+	return menge.size();
+    }
+
+    public int[] getElements() {
+	int[] res=new int[menge.size()];
+	int idx=0;
+	Iterator<Integer> itr=menge.iterator();
+	while(itr.hasNext())
+	    res[i++]=itr.next().intValue();
+	return res;
+    }
+
+}
+
+Aufgabe 2)
+
+public interface ResizeableGO extends GraphObj {
+    public void resize(float scale);
+}
+=======================================================================
+public interface MoveableGO extends GraphObj {
+    public void move(float xOffset, float yOffset);
+}
+=======================================================================
+
+public class Rectangle implements ResizeableGO, MoveableGO {
+
+    private int color;
+    private boolean shown;
+    private float sizeX;
+    private float sizeY;
+    private float posX;
+    private float posY;
+    
+    public int getColor() {
+        return color;
+    }
+
+    public boolean isShown() {
+        return shown;
+    }
+
+    public float getSizeX() {
+        return sizeX;
+    }
+
+    public float getSizeY() {
+        return sizeY;
+    }
+
+    public float getPosX() {
+        return posX;
+    }
+
+    public float getPosY() {
+        return posY;
+    }
+
+    public Rectangle(float posX,float posY,float sizeX, float sizeY)
+    {
+	this.sizeX=sizeX;
+	this.sizeY=sizeY;
+	this.posX=posX;
+	this.posY=posY;
+    }
+    
+    public void setColor(int x) {
+	color=x;
+    }
+
+    public void show() {
+	shown=true;
+    }
+
+    public void hide() {
+	shown=false;
+    }
+
+    public void move(float xOffset, float yOffset) {
+	posX+=xOffset;
+	posY+=yOffset;
+    }
+
+    public void resize(float scale) {
+	sizeX*=scale;
+	sizeY*=scale;
+    }
+
+    public String toString()
+    {
+	return "Rectangle: Pos( "+posX+", "+posY+") Size( "+sizeX+", "+sizeY+") Color: "+color+" Visible: "+shown+";";
+    }
+    
+    public static void resizeAll(float r, ResizeableGO rgo[]) 
+    {
+	for (ResizeableGO g : rgo) 
+	    g.resize(r);
+    }
+    
+    public static void moveAll(float dx, float dy, MoveableGO mgo[]) 
+    {
+	for (MoveableGO m : mgo) 
+	    m.move(dx, dy);
+    }
+    
+    public static void main(String args[]) {
+	java.util.Random rand = new java.util.Random();
+	int rectangles=rand.nextInt(10)+5;
+	Rectangle[] rectVec=new Rectangle[rectangles];
+	for(int i=0;i<rectangles;i++)
+	{
+	    Rectangle r=new Rectangle(rand.nextFloat()*1000,
+		    rand.nextFloat()*1000,
+		    rand.nextFloat()*1000,
+		    rand.nextFloat()*1000);
+	    r.setColor(rand.nextInt(256));
+	    System.out.println(r);
+	    rectVec[i]=r;
+	}
+	
+	float dx=rand.nextFloat()-0.5f;
+	float dy=rand.nextFloat()-0.5f;
+	System.out.println("\nMoving dx: "+dx+" dy: "+dy);
+	Rectangle.moveAll(dx, dy, rectVec);
+	for(Rectangle r : rectVec)
+	    System.out.println(r);
+	float scale=rand.nextFloat()+0.5f;
+	System.out.println("\nResizing scale: "+scale);
+	Rectangle.resizeAll(scale, rectVec);
+	for(Rectangle r : rectVec)
+	    System.out.println(r);
+    }
+}
+
